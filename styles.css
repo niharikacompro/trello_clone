@@ -15,7 +15,7 @@ button {
 
 button:hover {
     /* Add hover effects if needed */
-    outline: none;
+    outline: 2px solid #ffffff;
 }
 
 
