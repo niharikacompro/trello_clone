@@ -6,6 +6,7 @@ body {
     margin: 0;
     padding: 0;
 }
+<<<<<<< HEAD
 button {
     all: unset; /* Resets all button-specific styles */
   
@@ -18,6 +19,8 @@ button:hover {
     outline: 2px solid #ffffff;
 }
 
+=======
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
 
 .board-container {
     display: grid;
@@ -27,6 +30,7 @@ button:hover {
 }
 
 .list {
+<<<<<<< HEAD
     background-color: #282838;
     color: #f6f6f6;
     border-radius: 10px;
@@ -45,12 +49,26 @@ button:hover {
 .list:hover {
    
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+=======
+    background-color: #000000;
+    color: #f6f6f6;
+    border-radius: 8px;
+    margin: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    min-height:200px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
 }
 
 .list-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+<<<<<<< HEAD
     margin-bottom: 15px;
 }
 
@@ -85,10 +103,25 @@ button:hover {
     background: #3a3a4d;
     padding: 12px;
     border-radius: 8px;
+=======
+    margin-bottom: 10px;
+}
+
+.list-header h3 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.card {
+    background: #38384a;
+    padding: 10px;
+    border-radius: 5px;
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
+<<<<<<< HEAD
     margin-bottom: 12px;
     cursor: move;
     transition: background 0.2s ease, transform 0.2s ease;
@@ -121,12 +154,49 @@ button:hover {
 
 .add-card:hover,
 .add-list:hover {
+=======
+    margin-bottom: 10px;
+    cursor: move;
+}
+
+.card:hover {
+    background: #4c4c5d;
+    border: 2px solid #ffffff;
+}
+
+.card-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.card-icons i {
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.card-icons i:hover {
+    color: #ff4d4d;
+}
+
+.add-card, .add-list {
+    background-color: #0079bf;
+    color: #fff;
+    padding: 8px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.add-card:hover, .add-list:hover {
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
     background-color: #005fa3;
 }
 
 .input-container {
     display: flex;
     flex-direction: column;
+<<<<<<< HEAD
     gap: 8px;
     margin-top: 12px;
 }
@@ -143,10 +213,21 @@ button:hover {
 
 .input-container input:focus {
     border: 1px solid #0079bf;
+=======
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.input-container input {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
 }
 
 .input-container .buttons {
     display: flex;
+<<<<<<< HEAD
     gap: 8px;
 }
 
@@ -156,6 +237,16 @@ button:hover {
     border: none;
     cursor: pointer;
     transition: background 0.2s ease;
+=======
+    gap: 5px;
+}
+
+.input-container button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
 }
 
 .input-container .confirm {
@@ -163,15 +254,19 @@ button:hover {
     color: #fff;
 }
 
+<<<<<<< HEAD
 .input-container .confirm:hover {
     background-color: #005fa3;
 }
 
+=======
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
 .input-container .cancel {
     background-color: #ff4d4d;
     color: #fff;
 }
 
+<<<<<<< HEAD
 .input-container .cancel:hover {
     background-color: #d93838;
 }
@@ -209,4 +304,12 @@ button:hover {
     padding: 12px;
     overflow-y: auto;
     max-height: 300px;
+=======
+.edit-input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
 }

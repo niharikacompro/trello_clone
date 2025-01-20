@@ -3,7 +3,10 @@ let boardData = JSON.parse(localStorage.getItem("boardData")) || [];
 
 const boardContainer = document.getElementById("boardContainer");
 const addListContainer = document.getElementById("addListContainer");
+<<<<<<< HEAD
 const addlistbutton =document.getElementById('addListButton');
+=======
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
 
 function saveBoardData() {
     localStorage.setItem("boardData", JSON.stringify(boardData));
@@ -12,10 +15,15 @@ function saveBoardData() {
 function renderBoard() {
     boardContainer.innerHTML = "";
     boardData.forEach((list, listIndex) => createListElement(list, listIndex));
+<<<<<<< HEAD
     resetAddListButton(); // Ensure the "Add a List" button is reset every time
 }
 
 
+=======
+}
+
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
 function createListElement(list, listIndex) {
     const listElement = document.createElement("div");
     listElement.classList.add("list");
@@ -28,6 +36,7 @@ function createListElement(list, listIndex) {
     listHeader.innerHTML = `
         <h3>${list.name}</h3>
         <div class="list-icons">
+<<<<<<< HEAD
             <button class="edit-button" title="Edit">
                 <i class="fas fa-edit"></i>
             </button>
@@ -40,6 +49,17 @@ function createListElement(list, listIndex) {
     // Edit and delete functionality for lists
     const editIcon = listHeader.querySelector(".fa-edit");
     editIcon.addEventListener("click", () => {
+=======
+            <i class="fas fa-edit" title="Edit"></i>
+            <i class="fas fa-trash" title="Delete"></i>
+        </div>
+    `;
+
+    // Edit list functionality
+    const editIcon = listHeader.querySelector(".fa-edit");
+    editIcon.addEventListener("click", () => {
+        const listButton= document.getElementById('addListButton')
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
         const inputField = document.createElement("input");
         inputField.type = "text";
         inputField.value = list.name;
@@ -54,13 +74,24 @@ function createListElement(list, listIndex) {
                 boardData[listIndex].name = newListName;
                 saveBoardData();
                 renderBoard();
+<<<<<<< HEAD
+=======
+               
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
             }
         });
 
         const cancelEditButton = document.createElement("button");
         cancelEditButton.textContent = "Cancel";
         cancelEditButton.classList.add("cancel");
+<<<<<<< HEAD
         cancelEditButton.addEventListener("click", () => renderBoard());
+=======
+        cancelEditButton.addEventListener("click", () => {
+            renderBoard();
+          
+        });
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
 
         listHeader.innerHTML = "";
         listHeader.appendChild(inputField);
@@ -68,6 +99,10 @@ function createListElement(list, listIndex) {
         listHeader.appendChild(cancelEditButton);
     });
 
+<<<<<<< HEAD
+=======
+    // Delete list functionality
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
     const deleteIcon = listHeader.querySelector(".fa-trash");
     deleteIcon.addEventListener("click", () => {
         if (confirm("Are you sure you want to delete this list?")) {
@@ -79,16 +114,23 @@ function createListElement(list, listIndex) {
 
     listElement.appendChild(listHeader);
 
+<<<<<<< HEAD
     // Cards container (as an unordered list)
     const cardsContainer = document.createElement("ul");
     cardsContainer.classList.add("cards-container");
 
     list.cards.forEach((card, cardIndex) => {
         const cardElement = document.createElement("li");
+=======
+    // Cards
+    list.cards.forEach((card, cardIndex) => {
+        const cardElement = document.createElement("div");
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
         cardElement.classList.add("card");
         cardElement.setAttribute("draggable", "true");
         cardElement.setAttribute("data-card-index", cardIndex);
 
+<<<<<<< HEAD
         cardElement.innerHTML = `
             <div class="card-content">
                 <h3>${card}</h3>
@@ -106,6 +148,20 @@ function createListElement(list, listIndex) {
         // Edit card functionality
         const editIcon = cardElement.querySelector(".fa-edit");
         editIcon.addEventListener("click", () => {
+=======
+        const cardContent = document.createElement("div");
+        cardContent.textContent = card;
+        cardContent.classList.add("card-content");
+
+        const cardIcons = document.createElement("div");
+        cardIcons.classList.add("card-icons");
+
+        // Edit icon
+        const editCardIcon = document.createElement("i");
+        editCardIcon.classList.add("fas", "fa-edit");
+        editCardIcon.title = "Edit";
+        editCardIcon.addEventListener("click", () => {
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
             const inputField = document.createElement("input");
             inputField.type = "text";
             inputField.value = card;
@@ -126,7 +182,13 @@ function createListElement(list, listIndex) {
             const cancelEditButton = document.createElement("button");
             cancelEditButton.textContent = "Cancel";
             cancelEditButton.classList.add("cancel");
+<<<<<<< HEAD
             cancelEditButton.addEventListener("click", () => renderBoard());
+=======
+            cancelEditButton.addEventListener("click", () => {
+                renderBoard();
+            });
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
 
             cardElement.innerHTML = "";
             cardElement.appendChild(inputField);
@@ -134,9 +196,17 @@ function createListElement(list, listIndex) {
             cardElement.appendChild(cancelEditButton);
         });
 
+<<<<<<< HEAD
         // Delete card functionality
         const deleteIcon = cardElement.querySelector(".fa-trash");
         deleteIcon.addEventListener("click", () => {
+=======
+        // Delete icon
+        const deleteCardIcon = document.createElement("i");
+        deleteCardIcon.classList.add("fas", "fa-trash");
+        deleteCardIcon.title = "Delete";
+        deleteCardIcon.addEventListener("click", () => {
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
             if (confirm("Are you sure you want to delete this card?")) {
                 list.cards.splice(cardIndex, 1);
                 saveBoardData();
@@ -144,10 +214,23 @@ function createListElement(list, listIndex) {
             }
         });
 
+<<<<<<< HEAD
         // Drag-and-drop functionality for cards
         cardElement.addEventListener("dragstart", (e) => {
             e.dataTransfer.setData("text/plain", JSON.stringify({ fromList: listIndex, fromCard: cardIndex }));
             e.dataTransfer.effectAllowed = "move";
+=======
+        cardIcons.appendChild(editCardIcon);
+        cardIcons.appendChild(deleteCardIcon);
+        cardElement.appendChild(cardContent);
+        cardElement.appendChild(cardIcons);
+
+        listElement.appendChild(cardElement);
+
+        // Make cards draggable between lists
+        cardElement.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("text", `${listIndex}-${cardIndex}`);
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
         });
 
         cardElement.addEventListener("dragover", (e) => {
@@ -155,6 +238,7 @@ function createListElement(list, listIndex) {
         });
 
         cardElement.addEventListener("drop", (e) => {
+<<<<<<< HEAD
             e.preventDefault();
             const data = JSON.parse(e.dataTransfer.getData("text/plain"));
             if (data.fromList !== listIndex || data.fromCard !== cardIndex) {
@@ -172,6 +256,18 @@ function createListElement(list, listIndex) {
 
     // Add card button
     const addCardContainer = document.createElement("button");
+=======
+            const [draggedListIndex, draggedCardIndex] = e.dataTransfer.getData("text").split("-");
+            const draggedCard = boardData[draggedListIndex].cards.splice(draggedCardIndex, 1)[0];
+            list.cards.push(draggedCard);
+            saveBoardData();
+            renderBoard();
+        });
+    });
+
+    // Add card functionality
+    const addCardContainer = document.createElement("div");
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
     addCardContainer.classList.add("add-card");
     addCardContainer.textContent = "+ Add a new card";
 
@@ -201,7 +297,13 @@ function createListElement(list, listIndex) {
         const cancelButton = document.createElement("button");
         cancelButton.textContent = "Cancel";
         cancelButton.classList.add("cancel");
+<<<<<<< HEAD
         cancelButton.addEventListener("click", () => renderBoard());
+=======
+        cancelButton.addEventListener("click", () => {
+            renderBoard();
+        });
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
 
         buttons.appendChild(confirmButton);
         buttons.appendChild(cancelButton);
@@ -214,6 +316,7 @@ function createListElement(list, listIndex) {
 
     listElement.appendChild(addCardContainer);
 
+<<<<<<< HEAD
     // Drag-and-drop functionality for lists
     listElement.addEventListener("dragover", (e) => {
         e.preventDefault();
@@ -230,11 +333,14 @@ function createListElement(list, listIndex) {
         }
     });
 
+=======
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
     boardContainer.appendChild(listElement);
 }
 
 
 
+<<<<<<< HEAD
 // Function to reset the "Add a new list" button to its original state
 function resetAddListButton() {
     // Set the original state of the container
@@ -314,5 +420,72 @@ function handleAddList() {
 addlistbutton.addEventListener("click", handleAddList);
 
 
+=======
+addListContainer.addEventListener("click", function handleAddList() {
+// Remove existing "Add a new list" button if already present
+addListContainer.innerHTML = "";
+
+// Create input container
+const inputContainer = document.createElement("div");
+inputContainer.classList.add("input-container");
+
+// Input field for list name
+const inputField = document.createElement("input");
+inputField.type = "text";
+inputField.placeholder = "Enter list name...";
+inputField.required = true;
+
+// Buttons container
+const buttons = document.createElement("div");
+buttons.classList.add("buttons");
+
+// Confirm button
+const confirmButton = document.createElement("button");
+confirmButton.textContent = "Add List";
+confirmButton.classList.add("confirm");
+confirmButton.addEventListener("click", () => {
+const listName = inputField.value.trim();
+if (listName) {
+    boardData.push({ name: listName, cards: [] });
+    saveBoardData();
+    renderBoard();
+    resetAddListButton(); // Reset the "Add a new list" button
+} else {
+    alert("Please enter a list name!"); // Validation alert
+}
+});
+
+// Cancel button
+const cancelButton = document.createElement("button");
+cancelButton.textContent = "Cancel";
+cancelButton.classList.add("cancel");
+cancelButton.addEventListener("click", resetAddListButton); // Simply reset without action
+
+// Append buttons to the buttons container
+buttons.appendChild(confirmButton);
+buttons.appendChild(cancelButton);
+
+// Append input and buttons to the input container
+inputContainer.appendChild(inputField);
+inputContainer.appendChild(buttons);
+
+// Append input container to `addListContainer`
+addListContainer.appendChild(inputContainer);
+
+// Focus on the input field when the input container is rendered
+inputField.focus();
+
+// Function to reset the "Add a new list" button to its original state
+function resetAddListButton() {
+// Set the original state of the container
+addListContainer.innerHTML = `<div class="add-list" id="addListButton">+ Add a new list</div>`;
+// Reattach the click event listener to the new "Add a new list" button
+const addListButton = document.getElementById("addListButton");
+if (addListButton) {
+    addListButton.addEventListener("click", handleAddList);
+}
+}
+});
+>>>>>>> 526629f228814d54d2b80dc03fff93fd5c8cfd96
 
 renderBoard();
