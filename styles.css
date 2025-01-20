@@ -6,6 +6,18 @@ body {
     margin: 0;
     padding: 0;
 }
+button {
+    all: unset; /* Resets all button-specific styles */
+  
+    cursor: pointer;
+    background: #3a3a4d;
+}
+
+button:hover {
+    /* Add hover effects if needed */
+    outline: none;
+}
+
 
 .board-container {
     display: grid;
@@ -25,6 +37,7 @@ body {
     padding: 15px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     overflow: hidden;
    
 }
@@ -47,18 +60,24 @@ body {
     font-weight: bold;
     color: #ffffff;
 }
+.card-icons {
+    display: flex;
+    gap: 8px; /* Adjust gap for cleaner spacing */
+    justify-content: flex-end; /* Align icons neatly to the right */
+}
 .card-icons i {
-    color: #ffffff;
+    color: #f6f6f6; /* Consistent subtle color */
     cursor: pointer;
-    transition: color 0.2s ease;
-    background-color: none; /* Removed background */
-    border: none; /* Ensures no border is applied */
-    padding: 0; /* No extra padding around the icons */
+    font-size: 20px; /* Improved visibility for icons */
+    transition: color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+    padding: 6px; /* Subtle padding for a clickable area */
+    border-radius: 50%; /* Circular hover effect */
 }
 
 .card-icons i:hover {
-    color: #ff4d4d; /* Only changes the color on hover */
-    background: none; /* No hover background */
+    color: #ff4d4d; /* Highlight color for hover */
+    background-color: #3a3a4d; /* Background for better contrast */
+    transform: scale(1.1); /* Subtle zoom effect */
 }
 
 
@@ -81,10 +100,7 @@ body {
    outline: 2px solid #ffffff;
 }
 
-.card-icons {
-    display: flex;
-    gap: 12px;
-}
+
 .add-card{
     text-align: center;
 }
@@ -174,4 +190,23 @@ body {
 
 .edit-input:focus {
     border: 1px solid #0079bf;
+}
+#addListButton {
+    background-color: #0079bf;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 12px;
+    margin-left:18px;
+  
+}
+.cards-container{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    overflow-y: auto;
+    max-height: 300px;
 }
