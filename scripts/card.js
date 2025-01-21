@@ -192,6 +192,9 @@ export function createListElement(list, listIndex,boardData) {
                 saveBoardData(boardData);
                 renderBoard(boardData);
             }
+            else{
+                alert("Please enter a card name!"); 
+            }
         });
 
         const cancelButton = document.createElement("button");

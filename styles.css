@@ -69,6 +69,10 @@ button:focus-visible{
     display: flex;
     gap: 8px; /* Adjust gap for cleaner spacing */
     justify-content: flex-end; /* Align icons neatly to the right */
+   
+}
+.list-icons button{
+    padding:4px;
 }
 .list-icons {
     display: flex;
@@ -85,9 +89,8 @@ button:focus-visible{
 }
 
 .card-icons i:hover {
-    color: #ff4d4d; /* Highlight color for hover */
+   
     background-color: #3a3a4d; /* Background for better contrast */
-    transform: scale(1.1); /* Subtle zoom effect */
 }
 
 
@@ -227,8 +230,6 @@ button:focus-visible{
     overflow-y: auto;
     max-height: 300px;
 }
-.card button{
-    outline:2px solid #ffffff;
-    border-radius: 2px;
-    padding: 2px;
-}
+
+
+
