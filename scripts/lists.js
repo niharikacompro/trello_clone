@@ -1,39 +1,38 @@
 const addListContainer = document.getElementById("addListContainer");
-const addlistbutton =document.getElementById('addListButton');
-import { saveBoardData,renderBoard } from "./storage.js";
+const addListButton = document.getElementById('addListButton');
+import { saveBoardData, renderBoard } from "./storage.js";
 
-
-
-export function resetAddListButton() {
+// Function to reset the "Add a new list" button to its original state
+export function resetAddListButton(boardData,inputContainer) {
+    inputContainer.style.display="none";
     // Set the original state of the container
-    while (addListContainer.firstChild) {
-        addListContainer.removeChild(addListContainer.firstChild);
-    }
-
-    const addList = document.createElement("button");
-    addList.textContent = "+ Add a List";
-    addList.id = "addListButton"; // Set the ID for the new button
-    addListContainer.appendChild(addList);
-  
-
-    // Reattach the click event listener to the new "Add a new list" button
-    addList.addEventListener("click", handleAddList);
+   
+        addListButton.style.display = "block";
+      
 }
 
 // Function to handle the "Add a new list" button click
 export function handleAddList(boardData) {
+ 
     // Remove existing "Add a new list" button if already present
-    addListContainer.innerHTML = "";
+   
+    addListButton.style.display="none";
 
     // Create input container
     const inputContainer = document.createElement("div");
     inputContainer.classList.add("input-container");
+   
 
     // Input field for list name
     const inputField = document.createElement("input");
     inputField.type = "text";
     inputField.placeholder = "Enter list name...";
     inputField.required = true;
+    inputField.addEventListener("keyup", (e) => {
+        if (e.key === "Enter") {
+            confirmButton.click();
+        }
+    });
 
     // Buttons container
     const buttons = document.createElement("div");
@@ -46,12 +45,13 @@ export function handleAddList(boardData) {
     confirmButton.addEventListener("click", () => {
         const listName = inputField.value.trim();
         if (listName) {
-            console.log("mmm", boardData);
             boardData.push({ name: listName, cards: [] });
             saveBoardData(boardData);
-
             renderBoard(boardData);
-            resetAddListButton(); // Reset the button to its original state
+            inputContainer.style.display="none";
+            addListButton.style.display="block";
+          
+         
         } else {
             alert("Please enter a list name!"); // Validation alert
         }
@@ -61,7 +61,10 @@ export function handleAddList(boardData) {
     const cancelButton = document.createElement("button");
     cancelButton.textContent = "Cancel";
     cancelButton.classList.add("cancel");
-    cancelButton.addEventListener("click", resetAddListButton); // Simply reset without action
+    cancelButton.addEventListener("click", ()=>{
+        inputContainer.style.display="none";
+            addListButton.style.display="block";
+    }); // Simply reset without action
 
     // Append buttons to the buttons container
     buttons.appendChild(confirmButton);
