@@ -13,8 +13,13 @@ button {
 }
 
 button:hover {
-    /* Add hover effects if needed */
+  
     outline: 2px solid #ffffff;
+}
+button:focus-visible{
+    outline: 2px solid #ffffff;
+  
+
 }
 
 
@@ -49,6 +54,7 @@ button:hover {
 .list-header {
     display: flex;
     justify-content: space-between;
+    gap:10px;
     align-items: center;
     margin-bottom: 15px;
 }
@@ -64,11 +70,16 @@ button:hover {
     gap: 8px; /* Adjust gap for cleaner spacing */
     justify-content: flex-end; /* Align icons neatly to the right */
 }
+.list-icons {
+    display: flex;
+    gap: 10px; /* Adjust gap for cleaner spacing */
+    justify-content: flex-end; /* Align icons neatly to the right */
+}
 .card-icons i {
     color: #f6f6f6; /* Consistent subtle color */
     cursor: pointer;
     font-size: 20px; /* Improved visibility for icons */
-    transition: color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+    
     padding: 6px; /* Subtle padding for a clickable area */
     border-radius: 50%; /* Circular hover effect */
 }
@@ -83,10 +94,13 @@ button:hover {
 .card {
     background: #3a3a4d;
     padding: 12px;
-    border-radius: 8px;
+    border-radius: 12px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+  
+  
+    gap:10px;
+ 
+    
     position: relative;
     margin-bottom: 12px;
     cursor: move;
@@ -115,6 +129,7 @@ button:hover {
     border-radius: 8px;
     cursor: pointer;
     margin-top: 12px;
+  
     transition: background 0.2s ease;
 }
 
@@ -157,8 +172,10 @@ button:hover {
     transition: background 0.2s ease;
 }
 
+
 .input-container .confirm {
     background-color: #0079bf;
+    margin:4px;
     color: #fff;
 }
 
@@ -169,6 +186,7 @@ button:hover {
 .input-container .cancel {
     background-color: #ff4d4d;
     color: #fff;
+    margin:4px;
 }
 
 .input-container .cancel:hover {
@@ -208,4 +226,9 @@ button:hover {
     padding: 12px;
     overflow-y: auto;
     max-height: 300px;
+}
+.card button{
+    outline:2px solid #ffffff;
+    border-radius: 2px;
+    padding: 2px;
 }

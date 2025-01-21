@@ -1,4 +1,5 @@
-function createListElement(list, listIndex) {
+const boardContainer = document.getElementById("boardContainer");
+export function createListElement(list, listIndex) {
     const listElement = document.createElement("div");
     listElement.classList.add("list");
     listElement.setAttribute("data-list-index", listIndex);
@@ -8,19 +9,19 @@ function createListElement(list, listIndex) {
     const listHeader = document.createElement("div");
     listHeader.classList.add("list-header");
     listHeader.innerHTML = `
-    <h3>${list.name}</h3>
-    <div class="list-icons">
-        <button class="edit-button" title="Edit">
-            <i class="fas fa-edit"></i>
-        </button>
-        <button class="delete-button" title="Delete">
-            <i class="fas fa-trash"></i>
-        </button>
-    </div>
-`;
+        <h3>${list.name}</h3>
+        <div class="list-icons">
+            <button class="edit-button" title="Edit" id="edit-list-button">
+                <i class="fas fa-edit"></i>
+            </button>
+            <button class="delete-button" title="Delete" id="delete-list-button">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
 
-    // Edit list functionality
-    const editIcon = listHeader.querySelector(".fa-edit");
+    // Edit and delete functionality for lists
+    const editIcon = listHeader.querySelector("#edit-list-button");
     editIcon.addEventListener("click", () => {
         const inputField = document.createElement("input");
         inputField.type = "text";
@@ -48,10 +49,10 @@ function createListElement(list, listIndex) {
         listHeader.appendChild(inputField);
         listHeader.appendChild(confirmEditButton);
         listHeader.appendChild(cancelEditButton);
+        inputField.focus();
     });
 
-    // Delete list functionality
-    const deleteIcon = listHeader.querySelector(".fa-trash");
+    const deleteIcon = listHeader.querySelector("#delete-list-button");
     deleteIcon.addEventListener("click", () => {
         if (confirm("Are you sure you want to delete this list?")) {
             boardData.splice(listIndex, 1);
@@ -62,28 +63,33 @@ function createListElement(list, listIndex) {
 
     listElement.appendChild(listHeader);
 
-    // Cards
+    // Cards container (as an unordered list)
+    const cardsContainer = document.createElement("ul");
+    cardsContainer.classList.add("cards-container");
+
     list.cards.forEach((card, cardIndex) => {
-        const cardElement = document.createElement("div");
+        const cardElement = document.createElement("li");
         cardElement.classList.add("card");
         cardElement.setAttribute("draggable", "true");
         cardElement.setAttribute("data-card-index", cardIndex);
 
-        const cardContent = document.createElement("div");
-        cardContent.innerHTML = `
-        <h3>${card}</h3>
-        <div class="card-icons">
-          <button class="edit-button" title="Edit">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button class="delete-button" title="Delete">
-            <i class="fas fa-trash"></i>
-          </button>
-        </div>
-    `;
-        cardContent.classList.add("card-content");
+        cardElement.innerHTML = `
+            <div class="card-content">
+                <h3>${card}</h3>
+              
+                <div class="card-icons">
+                    <button class="edit-button" title="Edit" id="edit-card-button">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="delete-button" title="Delete" id="delete-card-button">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
 
-        const editIcon = cardContent.querySelector(".fa-edit");
+        // Edit card functionality
+        const editIcon = cardElement.querySelector("#edit-card-button");
         editIcon.addEventListener("click", () => {
             const inputField = document.createElement("input");
             inputField.type = "text";
@@ -107,13 +113,15 @@ function createListElement(list, listIndex) {
             cancelEditButton.classList.add("cancel");
             cancelEditButton.addEventListener("click", () => renderBoard());
 
-            cardContent.innerHTML = "";
-            cardContent.appendChild(inputField);
-            cardContent.appendChild(confirmEditButton);
-            cardContent.appendChild(cancelEditButton);
+            cardElement.innerHTML = "";
+            cardElement.appendChild(inputField);
+            cardElement.appendChild(confirmEditButton);
+            cardElement.appendChild(cancelEditButton);
+            inputField.focus();
         });
 
-        const deleteIcon = cardContent.querySelector(".fa-trash");
+        // Delete card functionality
+        const deleteIcon = cardElement.querySelector("#delete-card-button");
         deleteIcon.addEventListener("click", () => {
             if (confirm("Are you sure you want to delete this card?")) {
                 list.cards.splice(cardIndex, 1);
@@ -122,16 +130,38 @@ function createListElement(list, listIndex) {
             }
         });
 
-        cardElement.appendChild(cardContent);
-        listElement.appendChild(cardElement);
+        // Drag-and-drop functionality for cards
+        cardElement.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("text/plain", JSON.stringify({ fromList: listIndex, fromCard: cardIndex }));
+            e.dataTransfer.effectAllowed = "move";
+        });
+
+        cardElement.addEventListener("dragover", (e) => {
+            e.preventDefault();
+        });
+
+        cardElement.addEventListener("drop", (e) => {
+            e.preventDefault();
+            const data = JSON.parse(e.dataTransfer.getData("text/plain"));
+            if (data.fromList !== listIndex || data.fromCard !== cardIndex) {
+                const draggedCard = boardData[data.fromList].cards.splice(data.fromCard, 1)[0];
+                list.cards.splice(cardIndex, 0, draggedCard);
+                saveBoardData();
+                renderBoard();
+            }
+        });
+
+        cardsContainer.appendChild(cardElement);
     });
 
-    // Add card functionality
-    const addCardButton = document.createElement("button");
-    addCardButton.classList.add("add-card");
-    addCardButton.textContent = "+ Add a new card";
+    listElement.appendChild(cardsContainer);
 
-    addCardButton.addEventListener("click", () => {
+    // Add card button
+    const addCardContainer = document.createElement("button");
+    addCardContainer.classList.add("add-card");
+    addCardContainer.textContent = "+ Add a new card";
+
+    addCardContainer.addEventListener("click", () => {
         const inputContainer = document.createElement("div");
         inputContainer.classList.add("input-container");
 
@@ -163,12 +193,30 @@ function createListElement(list, listIndex) {
         buttons.appendChild(cancelButton);
         inputContainer.appendChild(inputField);
         inputContainer.appendChild(buttons);
+     
 
         listElement.appendChild(inputContainer);
-        listElement.removeChild(addCardButton);
+        listElement.removeChild(addCardContainer);
+        inputField.focus();
     });
 
-    listElement.appendChild(addCardButton);
+    listElement.appendChild(addCardContainer);
+
+    // Drag-and-drop functionality for lists
+    listElement.addEventListener("dragover", (e) => {
+        e.preventDefault();
+    });
+
+    listElement.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const data = JSON.parse(e.dataTransfer.getData("text/plain"));
+        if (data.fromList !== listIndex) {
+            const draggedCard = boardData[data.fromList].cards.splice(data.fromCard, 1)[0];
+            boardData[listIndex].cards.push(draggedCard);
+            saveBoardData();
+            renderBoard();
+        }
+    });
 
     boardContainer.appendChild(listElement);
 }
