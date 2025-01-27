@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #1e1e2f;
-    color: white;
+    background-color: #3179BA;
+    
     margin: 0;
     padding: 0;
 }
@@ -9,12 +9,14 @@ button {
     all: unset; /* Resets all button-specific styles */
   
     cursor: pointer;
-    background: #3a3a4d;
+
+    border-radius: 8px;
 }
 
 button:hover {
   
     outline: 2px solid #ffffff;
+
 }
 button:focus-visible{
     outline: 2px solid #ffffff;
@@ -24,31 +26,50 @@ button:focus-visible{
 
 
 .board-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    display: flex;
+    align-items: flex-start;
+   overflow-x: auto;
     gap: 20px;
     padding: 20px;
+    scrollbar-width: thin; /* For Firefox, optional */
+    scrollbar-color: #3a3a4d #1e1e2f; /* For custom scrollbar colors */
+   
+}
+.board-container::-webkit-scrollbar {
+    height: 8px; /* Horizontal scrollbar height */
+}
+
+.board-container::-webkit-scrollbar-thumb {
+    background-color: #3a3a4d; /* Scrollbar thumb color */
+    border-radius: 10px; /* Rounded scrollbar */
+}
+
+.board-container::-webkit-scrollbar-track {
+    background-color: #1e1e2f; /* Scrollbar track color */
 }
 
 .list {
-    background-color: #282838;
-    color: #f6f6f6;
+    background-color: #F1F2F4;
+    color:#1E2E4D;
     border-radius: 10px;
     margin: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     width: 300px;
-    min-height: 200px;
+    flex-shrink: 0;
+  
     padding: 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
+  
    
 }
 
 .list:hover {
    
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    outline:2px solid #ffffff;
 }
 
 .list-header {
@@ -63,7 +84,7 @@ button:focus-visible{
     font-size: 20px;
     margin: 0;
     font-weight: bold;
-    color: #ffffff;
+    color: #1E2E4D;
 }
 .card-icons {
     display: flex;
@@ -73,20 +94,24 @@ button:focus-visible{
 }
 .list-icons button{
     padding:4px;
+    color:#5B677C;
 }
 .list-icons {
     display: flex;
     gap: 10px; /* Adjust gap for cleaner spacing */
     justify-content: flex-end; /* Align icons neatly to the right */
 }
-.card-icons i {
-    color: #f6f6f6; /* Consistent subtle color */
+.list-icons i, .card-icons i {
+   
     cursor: pointer;
     font-size: 20px; /* Improved visibility for icons */
+    flex-shrink: 0;
     
     padding: 6px; /* Subtle padding for a clickable area */
     border-radius: 50%; /* Circular hover effect */
 }
+
+
 
 .card-icons i:hover {
    
@@ -95,19 +120,20 @@ button:focus-visible{
 
 
 .card {
-    background: #3a3a4d;
+    background: #FFFFFF;
     padding: 12px;
     border-radius: 12px;
     display: flex;
-  
-  
-    gap:10px;
- 
-    
-    position: relative;
+    flex-direction: row; /* Keeps items in a row */
+    align-items: center; /* Aligns items vertically */
+    justify-content: space-between; /* Adds space between elements */
+    gap: 8px; /* Optional spacing between children */
     margin-bottom: 12px;
     cursor: move;
     transition: background 0.2s ease, transform 0.2s ease;
+}
+.card-content{
+    flex:1;
 }
 
 .card:hover {
@@ -224,12 +250,49 @@ button:focus-visible{
 }
 .cards-container{
     display: flex;
+   
     flex-direction: column;
     gap: 12px;
     padding: 12px;
     overflow-y: auto;
     max-height: 300px;
 }
+.list-actions-modal {
+    position: absolute;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 1000;
+    width: 200px;
+  }
+  
+  .list-actions-modal.hidden {
+    display: none;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .modal-actions {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .modal-actions li {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .modal-actions li:hover {
+    background-color: #f0f0f0;
+  }
 
 
 

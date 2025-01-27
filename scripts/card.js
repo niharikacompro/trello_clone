@@ -1,5 +1,6 @@
 const boardContainer = document.getElementById("boardContainer");
 import { renderBoard,saveBoardData } from "./storage.js";
+
 export function createListElement(list, listIndex,boardData) {
   
    
@@ -11,34 +12,40 @@ export function createListElement(list, listIndex,boardData) {
     // List header
     const listHeader = document.createElement("div");
     listHeader.classList.add("list-header");
+    const editButtonList =  
+    `<button class="edit-button" title="Edit" id="edit-list-button">
+              <i class="fas fa-edit"></i>
+     </button>`;
+     const deleteButtonList = 
+     `<button class="delete-button" title="Delete" id="delete-list-button">
+          <i class = "fas fa-trash"></i>
+        </button>`;
+        const listIcon=
+        `<button class="list-menu" title="list" id="list-menu">
+           <i class="fas fa-ellipsis-h"></i>
+      </button>`;
     listHeader.innerHTML = `
         <h3>${list.name}</h3>
         <div class="list-icons">
-            <button class="edit-button" title="Edit" id="edit-list-button">
-                <i class="fas fa-edit"></i>
-            </button>
-            <button class="delete-button" title="Delete" id="delete-list-button">
-                <i class="fas fa-trash"></i>
-            </button>
+        
+          ${listIcon}
         </div>
     `;
 
     // Edit and delete functionality for lists
-    const editIcon = listHeader.querySelector("#edit-list-button");
-    editIcon.addEventListener("click", () => {
+   
+   
+    function editList(){
         const inputField = document.createElement("input");
         inputField.type = "text";
         inputField.value = list.name;
         inputField.classList.add("edit-input");
         inputField.addEventListener("keydown", (e) => {
-             if (e.key === "Enter") {
-              
-            confirmEditButton.click();
-        }
+            if (e.key === "Enter") {
+                confirmEditButton.click();
+            }
         }
         );
-                
-
         const confirmEditButton = document.createElement("button");
         confirmEditButton.textContent = "Save";
         confirmEditButton.classList.add("confirm");
@@ -61,20 +68,83 @@ export function createListElement(list, listIndex,boardData) {
         listHeader.appendChild(confirmEditButton);
         listHeader.appendChild(cancelEditButton);
         inputField.focus();
-    });
-
-    const deleteIcon = listHeader.querySelector("#delete-list-button");
-    deleteIcon.addEventListener("click", () => {
+    }
+    function deleteList(){
         if (confirm("Are you sure you want to delete this list?")) {
             boardData.splice(listIndex, 1);
             saveBoardData(boardData);
             renderBoard(boardData);
         }
-    });
+
+    }
+
+
+
+   
+    const modal = document.createElement("div");
+    modal.classList.add("list-actions-modal", "hidden");
+    modal.innerHTML = `
+        <div class="modal-header">
+            <h4>List actions</h4>
+            <button class="modal-close-button">&times;</button>
+        </div>
+        <ul class="modal-actions">
+            <li class="modal-action-item" data-action="edit-list">Edit List</li>
+            <li class="modal-action-item" data-action="delete-list">Delete List</li>
+        </ul>
+    `;
+
+    document.body.appendChild(modal);
+
+
+ 
+//const modal = document.querySelector(".list-actions-modal");
+const menuButton = listHeader.querySelector(".list-menu");
+
+
+menuButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const rect = menuButton.getBoundingClientRect();
+    modal.style.top = `${rect.bottom + window.scrollY}px`;
+    modal.style.left = `${rect.left + window.scrollX}px`;
+    modal.classList.remove("hidden");
+});
+
+// Close modal when clicking outside
+document.addEventListener("click", (event) => {
+    if (!event.target.closest(".list-menu") && !event.target.closest(".list-actions-modal")) {
+        modal.classList.add("hidden");
+    }
+});
+
+// Close button inside the modal
+modal.querySelector(".modal-close-button").addEventListener("click", () => {
+    modal.classList.add("hidden");
+});
+
+
+
+modal.addEventListener("click", (event) => {
+    const action = event.target.getAttribute("data-action");
+    if (action) {
+        switch (action) {
+            case "edit-list":
+               editList();
+                  break;
+           case "delete-list":
+               deleteList();
+                break;
+         default:
+                break;
+        }
+        modal.classList.add("hidden");
+    }
+});
+
 
     listElement.appendChild(listHeader);
 
-    // Cards container (as an unordered list)
+   
     const cardsContainer = document.createElement("ul");
     cardsContainer.classList.add("cards-container");
 
@@ -83,18 +153,21 @@ export function createListElement(list, listIndex,boardData) {
         cardElement.classList.add("card");
         cardElement.setAttribute("draggable", "true");
         cardElement.setAttribute("data-card-index", cardIndex);
-
+        const editButtonCard =
+        `<button class="edit-button" title="Edit" id="edit-card-button">
+              <i class="fas fa-edit"></i>
+              </button>`;
+        const deleteButtonCard =
+        `<button class="delete-button" title="Delete" id="delete-card-button">
+                <i class="fas fa-trash"></i>
+            </button>`;
         cardElement.innerHTML = `
             <div class="card-content">
                 <h3>${card}</h3>
               
                 <div class="card-icons">
-                    <button class="edit-button" title="Edit" id="edit-card-button">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="delete-button" title="Delete" id="delete-card-button">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                 ${editButtonCard}
+                   ${deleteButtonCard}
                 </div>
             </div>
         `;
@@ -160,7 +233,7 @@ export function createListElement(list, listIndex,boardData) {
 
     listElement.appendChild(cardsContainer);
 
-    // Add card button
+   
     const addCardContainer = document.createElement("button");
     addCardContainer.classList.add("add-card");
     addCardContainer.textContent = "+ Add a new card";
@@ -194,6 +267,7 @@ export function createListElement(list, listIndex,boardData) {
             }
             else{
                 alert("Please enter a card name!"); 
+               
             }
         });
 

@@ -9,11 +9,11 @@ export function saveBoardData(boardData) {
         console.warn("boardData is not an array. Resetting to an empty array.");
         boardData = [];
     }
-    localStorage.setItem("boardData", JSON.stringify(boardData));
+    localStorage.setItem(STORAGE_KEY.BOARD_DATA, JSON.stringify(boardData));
 }
 
 export function loadBoardData() {
-    const data = JSON.parse(localStorage.getItem('boardData') || "[]");
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY.BOARD_DATA) || "[]");
     if (!Array.isArray(data)) {
         console.warn("boardData loaded is not an array. Resetting to an empty array.");
         return [];
@@ -22,7 +22,7 @@ export function loadBoardData() {
 }
 
 export function renderBoard(boardData) {
-    console.log("mmmm",boardData);
+ 
     boardContainer.innerHTML = "";
     boardData.forEach((list, listIndex) => createListElement(list, listIndex,boardData));
 }
