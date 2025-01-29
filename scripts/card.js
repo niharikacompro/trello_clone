@@ -70,29 +70,45 @@ export function createListElement(list, listIndex,boardData) {
         }
 
     }
-
-
-
-   
     const modal = document.createElement("div");
     modal.classList.add("list-actions-modal", "hidden");
     modal.innerHTML = `
-        <div class="modal-header">
-            <h4>List actions</h4>
-            <button class="modal-close-button">&times;</button>
-        </div>
+      
         <ul class="modal-actions">
-            <li class="modal-action-item" data-action="edit-list">Edit List</li>
-            <li class="modal-action-item" data-action="delete-list">Delete List</li>
+            <li class="modal-action-item" data-action="edit-list" tabindex="0" role='button'>Edit List</li>
+            <li class="modal-action-item" data-action="delete-list" role='button' tabindex='0'>Delete List</li>
         </ul>
     `;
 
-    document.body.appendChild(modal);
+    const menuButton = listHeader.querySelector(".list-menu");
+
+    menuButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+    
+        // Append the modal inside the list header if not already appended
+        if (!listHeader.contains(modal)) {
+            listHeader.appendChild(modal);
+        }
+    
+        // Get menu button position
+        const rect = menuButton.getBoundingClientRect();
+        const listHeaderRect = listHeader.getBoundingClientRect();
+    
+        // Position the modal right below the menu button
+        modal.style.top = `${menuButton.offsetHeight}px`; // Below the button
+        modal.style.left = `${menuButton.offsetLeft}px`; // Align with the button
+        modal.classList.remove("hidden");
+    });
+
+
+   
+   
+  
 
 
  
 //const modal = document.querySelector(".list-actions-modal");
-const menuButton = listHeader.querySelector(".list-menu");
+
 
 
 menuButton.addEventListener("click", (event) => {
@@ -111,9 +127,6 @@ document.addEventListener("click", (event) => {
 });
 
 // Close button inside the modal
-modal.querySelector(".modal-close-button").addEventListener("click", () => {
-    modal.classList.add("hidden");
-});
 
 
 
@@ -146,24 +159,27 @@ modal.addEventListener("click", (event) => {
         cardElement.classList.add("card");
         cardElement.setAttribute("draggable", "true");
         cardElement.setAttribute("data-card-index", cardIndex);
-        cardElement.setAttribute("title", card); 
+      
         const isLongContent = card.length > 60;
-        const truncatedContent = isLongContent ? `${card.slice(0, 40)}...` : card;
-        const cardIcon = `<button class="card-menu" title="Card" id="card-menu-${listIndex}-${cardIndex}">
+      
+        const cardIcon = `<button class="card-menu" title="Card Menu" id="card-menu-${listIndex}-${cardIndex}">
         <i class="fas fa-ellipsis-h"></i>
     </button>`;
+    
 
     cardElement.innerHTML = `
-    <div class="card-content">
-        <h3 class="card-title" title=${card}>${isLongContent ? truncatedContent : card}</h3>
+    
+        <h3 class="card-title" title=${card}>${isLongContent ? `${card.slice(0, 40)}...` : card}</h3>
         <div class="card-icons">
             ${cardIcon}
         </div>
-    </div>
+   
     `;
     const menuButton = cardElement.querySelector(`#card-menu-${listIndex}-${cardIndex}`);
+    
 
     menuButton.addEventListener("click", (event) => {
+        
         event.stopPropagation();
 
         // Remove any existing modals
@@ -174,19 +190,23 @@ modal.addEventListener("click", (event) => {
         const cardModal = document.createElement("div");
         cardModal.classList.add("card-actions-modal");
         cardModal.setAttribute("data-card-index", cardIndex);
+        const editcard = document.createElement("button");
+        editcard.textContent="Edit Card";
+        editcard.classList.add("modal-action-item");
+        editcard.setAttribute("data-action","edit-card");
 
         cardModal.innerHTML = `
-            <div class="modal-header">
-                <h4>Card Actions</h4>
-                <button class="modal-close-button">&times;</button>
-            </div>
-            <ul class="modal-actions">
-                <li class="modal-action-item" data-action="edit-card">Edit Card</li>
-                <li class="modal-action-item" data-action="delete-card">Delete Card</li>
+       <ul class="modal-actions">
+                <li class="modal-action-item" data-action="edit-card" role="button" tabindex="0">Edit Card</li>
+                <li class="modal-action-item" data-action="delete-card" role="button" tabindex="0">Delete Card</li>
             </ul>
+           
+          
+        
+           
         `;
 
-        document.body.appendChild(cardModal);
+        cardElement.appendChild(cardModal);
 
         // Calculate position
         const rect = menuButton.getBoundingClientRect();
@@ -211,10 +231,7 @@ modal.addEventListener("click", (event) => {
         cardModal.classList.add("visible");
 
         // Add event listener to close modal
-        const closeButton = cardModal.querySelector(".modal-close-button");
-        closeButton.addEventListener("click", () => {
-            cardModal.remove();
-        });
+      
 
         // Close modal when clicking outside
         document.addEventListener("click", (e) => {

@@ -2,8 +2,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #3179BA;
     
-    margin: 0;
-    padding: 2px;
+   padding: 10px;
  
         position: relative;
    
@@ -33,8 +32,8 @@ button {
 }
 
 
-button:focus-visible{
-    outline: 2px solid #ffffff;
+ button:focus-visible{
+  outline: 2px solid #DEDEDE;
   
 
 }
@@ -43,11 +42,13 @@ button:focus-visible{
 .board-container {
     display: flex;
     align-items: flex-start;
+    width: fit-content;
  
     gap: 20px;
     padding: 20px;
     margin:4px;
     margin-top: 100px;
+  
   
    
    
@@ -78,7 +79,7 @@ button:focus-visible{
     outline:2px solid #ffffff;
 }
 
-.list-header {
+.list-header{
     display: flex;
     justify-content: space-between;
     gap:10px;
@@ -94,11 +95,11 @@ button:focus-visible{
 }
 .card-icons {
     display: flex;
-    gap: 8px; /* Adjust gap for cleaner spacing */
+    gap: 10px; /* Adjust gap for cleaner spacing */
     justify-content: flex-end; /* Align icons neatly to the right */
    
 }
-.list-icons button{
+.list-icons button,.card-icons button{
     padding:4px;
     color:#5B677C;
 }
@@ -119,9 +120,9 @@ button:focus-visible{
 
 
 
-.card-icons i:hover {
+.card-icons i:hover,.list-icons i:hover{
    
-    background-color: #3a3a4d; /* Background for better contrast */
+    background-color: #DEDEDE ; /* Background for better contrast */
 }
 
 
@@ -213,8 +214,9 @@ button:focus-visible{
 }
 
 
+
 .input-container .confirm {
-    background-color: #28A745;
+    background-color: #003f7f;
     margin: 4px;
    
     color: #fff;
@@ -226,16 +228,14 @@ button:focus-visible{
 
 
 .input-container .cancel {
-    background-color: #ff4d4d;
+    background-color: #6c757d;
     color: #fff;
    margin:4px;
     padding: 8px;
     outline: none;
 }
 
-.input-container .cancel:hover {
-    background-color: #d93838;
-}
+
 
 .edit-input {
     width: 100%;
@@ -264,6 +264,9 @@ button:focus-visible{
     margin-top: 12px;
     margin-left:18px;
   
+}
+#addListButtonaddListButton:hover {
+    background-color: black;
 }
 .cards-container{
     display: flex;
@@ -327,12 +330,13 @@ button:focus-visible{
   }
   #addListFixedContainer {
     position: fixed;
-    top: 20px; /* Adjust this value to position it vertically */
-    left: 20px; /* Adjust this value to position it horizontally */
-    z-index: 1000; /* Ensure it stays above other elements */
+    top: 20px; 
+    left: 20px; 
+    z-index: 1000; 
   
     
 }
+
    
   
 
