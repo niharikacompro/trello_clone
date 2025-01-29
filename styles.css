@@ -3,8 +3,27 @@ body {
     background-color: #3179BA;
     
     margin: 0;
-    padding: 0;
+    padding: 2px;
+ 
+        position: relative;
+   
 }
+#addListContainer{
+    padding: 8px;
+    margin: 10px;
+    overflow-x: auto;
+    
+}
+#addListContainer .input-container {
+    display: flex; /* Ensures child elements align in a row */
+    width: 100%; /* Fit the width of its parent container */
+    overflow-x: auto; /* Allow horizontal scrolling */
+}
+#addListContainer .input-container input {
+    width: 1450px; /* The width of the input itself */
+    flex-shrink: 0; /* Prevent the input from shrinking */
+}
+
 button {
     all: unset; /* Resets all button-specific styles */
   
@@ -13,11 +32,7 @@ button {
     border-radius: 8px;
 }
 
-button:hover {
-  
-    outline: 2px solid #ffffff;
 
-}
 button:focus-visible{
     outline: 2px solid #ffffff;
   
@@ -28,25 +43,16 @@ button:focus-visible{
 .board-container {
     display: flex;
     align-items: flex-start;
-   overflow-x: auto;
+ 
     gap: 20px;
     padding: 20px;
-    scrollbar-width: thin; /* For Firefox, optional */
-    scrollbar-color: #3a3a4d #1e1e2f; /* For custom scrollbar colors */
+    margin:4px;
+    margin-top: 100px;
+  
+   
    
 }
-.board-container::-webkit-scrollbar {
-    height: 8px; /* Horizontal scrollbar height */
-}
 
-.board-container::-webkit-scrollbar-thumb {
-    background-color: #3a3a4d; /* Scrollbar thumb color */
-    border-radius: 10px; /* Rounded scrollbar */
-}
-
-.board-container::-webkit-scrollbar-track {
-    background-color: #1e1e2f; /* Scrollbar track color */
-}
 
 .list {
     background-color: #F1F2F4;
@@ -124,23 +130,28 @@ button:focus-visible{
     padding: 12px;
     border-radius: 12px;
     display: flex;
-    flex-direction: row; /* Keeps items in a row */
-    align-items: center; /* Aligns items vertically */
-    justify-content: space-between; /* Adds space between elements */
-    gap: 8px; /* Optional spacing between children */
+    justify-content: space-between;
+    gap:10px;
+    align-items: center;
+  
     margin-bottom: 12px;
     cursor: move;
-    transition: background 0.2s ease, transform 0.2s ease;
+   
+}
+.card .edit-input{
+    flex: 1;
 }
 .card-content{
-    flex:1;
+  display: flex;
+  gap:10px;
+  justify-content: space-between;
+ 
+}
+.card-content .card-title{
+    margin:2px
 }
 
-.card:hover {
-    background: #50506a;
-    
-   outline: 2px solid #ffffff;
-}
+
 
 
 .add-card{
@@ -178,8 +189,8 @@ button:focus-visible{
     padding: 8px;
     border-radius: 8px;
     border: 1px solid #444;
-    background-color: #1e1e2f;
-    color: #fff;
+    background-color: #f6f6f6;
+    color: #1e1e2f;
     outline: none;
     transition: border 0.2s ease;
 }
@@ -194,28 +205,32 @@ button:focus-visible{
 }
 
 .input-container button {
-    padding: 8px 12px;
+    padding: 10px;
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    transition: background 0.2s ease;
+    
 }
 
 
 .input-container .confirm {
-    background-color: #0079bf;
-    margin:4px;
+    background-color: #28A745;
+    margin: 4px;
+   
     color: #fff;
+    padding: 8px;
+    margin-left:8px;
+    outline: none;
 }
 
-.input-container .confirm:hover {
-    background-color: #005fa3;
-}
+
 
 .input-container .cancel {
     background-color: #ff4d4d;
     color: #fff;
-    margin:4px;
+   margin:4px;
+    padding: 8px;
+    outline: none;
 }
 
 .input-container .cancel:hover {
@@ -227,8 +242,8 @@ button:focus-visible{
     padding: 8px;
     border: 1px solid #444;
     border-radius: 8px;
-    background-color: #1e1e2f;
-    color: #fff;
+    background-color: #f6f6f6;
+    color:  #1e1e2f;
     outline: none;
     margin-right: 10px;
     transition: border 0.2s ease;
@@ -238,8 +253,10 @@ button:focus-visible{
     border: 1px solid #0079bf;
 }
 #addListButton {
-    background-color: #0079bf;
-    color: #fff;
+    background-color: #FFFFFF;
+    outline:none;
+    
+    color: #000000;
     padding: 10px;
     text-align: center;
     border-radius: 8px;
@@ -258,6 +275,15 @@ button:focus-visible{
     max-height: 300px;
 }
 .list-actions-modal {
+    position: absolute;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 1000;
+    width: 200px;
+  }
+  .card-actions-modal{
     position: absolute;
     background: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -293,6 +319,22 @@ button:focus-visible{
   .modal-actions li:hover {
     background-color: #f0f0f0;
   }
+ 
+  #addListContainer .input-container .buttons{
+    margin-top: 6px;
+    padding: 1px;
+    gap: 4px;
+  }
+  #addListFixedContainer {
+    position: fixed;
+    top: 20px; /* Adjust this value to position it vertically */
+    left: 20px; /* Adjust this value to position it horizontally */
+    z-index: 1000; /* Ensure it stays above other elements */
+  
+    
+}
+   
+  
 
 
 

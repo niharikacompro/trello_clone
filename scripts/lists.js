@@ -1,4 +1,5 @@
 const addListContainer = document.getElementById("addListContainer");
+const addListFixedButton = document.getElementById("addListFixedContainer");
 const addListButton = document.getElementById('addListButton');
 import { saveBoardData, renderBoard } from "./storage.js";
 
@@ -75,7 +76,8 @@ export function handleAddList(boardData) {
     inputContainer.appendChild(buttons);
 
     // Append input container to `addListContainer`
-    addListContainer.appendChild(inputContainer);
+    addListFixedButton.appendChild(inputContainer)
+  
 
     // Focus on the input field when the input container is rendered
     inputField.focus();

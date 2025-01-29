@@ -12,14 +12,7 @@ export function createListElement(list, listIndex,boardData) {
     // List header
     const listHeader = document.createElement("div");
     listHeader.classList.add("list-header");
-    const editButtonList =  
-    `<button class="edit-button" title="Edit" id="edit-list-button">
-              <i class="fas fa-edit"></i>
-     </button>`;
-     const deleteButtonList = 
-     `<button class="delete-button" title="Delete" id="delete-list-button">
-          <i class = "fas fa-trash"></i>
-        </button>`;
+   
         const listIcon=
         `<button class="list-menu" title="list" id="list-menu">
            <i class="fas fa-ellipsis-h"></i>
@@ -153,73 +146,143 @@ modal.addEventListener("click", (event) => {
         cardElement.classList.add("card");
         cardElement.setAttribute("draggable", "true");
         cardElement.setAttribute("data-card-index", cardIndex);
-        const editButtonCard =
-        `<button class="edit-button" title="Edit" id="edit-card-button">
-              <i class="fas fa-edit"></i>
-              </button>`;
-        const deleteButtonCard =
-        `<button class="delete-button" title="Delete" id="delete-card-button">
-                <i class="fas fa-trash"></i>
-            </button>`;
-        cardElement.innerHTML = `
-            <div class="card-content">
-                <h3>${card}</h3>
-              
-                <div class="card-icons">
-                 ${editButtonCard}
-                   ${deleteButtonCard}
-                </div>
+        cardElement.setAttribute("title", card); 
+        const isLongContent = card.length > 60;
+        const truncatedContent = isLongContent ? `${card.slice(0, 40)}...` : card;
+        const cardIcon = `<button class="card-menu" title="Card" id="card-menu-${listIndex}-${cardIndex}">
+        <i class="fas fa-ellipsis-h"></i>
+    </button>`;
+
+    cardElement.innerHTML = `
+    <div class="card-content">
+        <h3 class="card-title" title=${card}>${isLongContent ? truncatedContent : card}</h3>
+        <div class="card-icons">
+            ${cardIcon}
+        </div>
+    </div>
+    `;
+    const menuButton = cardElement.querySelector(`#card-menu-${listIndex}-${cardIndex}`);
+
+    menuButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+
+        // Remove any existing modals
+        const existingModal = document.querySelector(".card-actions-modal");
+        if (existingModal) existingModal.remove();
+
+        // Create a new modal
+        const cardModal = document.createElement("div");
+        cardModal.classList.add("card-actions-modal");
+        cardModal.setAttribute("data-card-index", cardIndex);
+
+        cardModal.innerHTML = `
+            <div class="modal-header">
+                <h4>Card Actions</h4>
+                <button class="modal-close-button">&times;</button>
             </div>
+            <ul class="modal-actions">
+                <li class="modal-action-item" data-action="edit-card">Edit Card</li>
+                <li class="modal-action-item" data-action="delete-card">Delete Card</li>
+            </ul>
         `;
 
-        // Edit card functionality
-        const editIcon = cardElement.querySelector("#edit-card-button");
-        editIcon.addEventListener("click", () => {
-            const inputField = document.createElement("input");
-            inputField.type = "text";
-            inputField.value = card;
-            inputField.classList.add("edit-input");
-            inputField.addEventListener("keydown", (e) => {
-                if (e.key === "Enter") {
-                    confirmEditButton.click();
-                }
-            }
-            );
+        document.body.appendChild(cardModal);
 
-            
-            const confirmEditButton = document.createElement("button");
-            confirmEditButton.textContent = "Save";
-            confirmEditButton.classList.add("confirm");
-            confirmEditButton.addEventListener("click", () => {
-                const newCardName = inputField.value.trim();
-                if (newCardName) {
-                    list.cards[cardIndex] = newCardName;
-                    saveBoardData(boardData);
-                    renderBoard(boardData);
+        // Calculate position
+        const rect = menuButton.getBoundingClientRect();
+        const modalWidth = cardModal.offsetWidth;
+        const modalHeight = cardModal.offsetHeight;
+
+        let top = rect.bottom + window.scrollY + 10; // Position below the button by default
+        let left = rect.left + window.scrollX ;
+
+        // Adjust for viewport boundaries
+        if (top + modalHeight > window.innerHeight) {
+            top = rect.top + window.scrollY - modalHeight - 10; // Position above if it overflows below
+        }
+
+        if (left + modalWidth > window.innerWidth) {
+            left = window.innerWidth - modalWidth - 10; // Adjust if it overflows to the right
+        }
+
+        cardModal.style.position = "absolute";
+        cardModal.style.top = `${  rect.bottom + window.scrollY - modalHeight + 10}px`;
+        cardModal.style.left = `${rect.left + window.scrollX}px`;
+        cardModal.classList.add("visible");
+
+        // Add event listener to close modal
+        const closeButton = cardModal.querySelector(".modal-close-button");
+        closeButton.addEventListener("click", () => {
+            cardModal.remove();
+        });
+
+        // Close modal when clicking outside
+        document.addEventListener("click", (e) => {
+            if (!cardModal.contains(e.target) && e.target !== menuButton) {
+                cardModal.remove();
+            }
+        }, { once: true });
+         
+
+
+            // Modal actions
+            cardModal.addEventListener("click", (event) => {
+                const action = event.target.getAttribute("data-action");
+                if (action) {
+                    switch (action) {
+                        case "edit-card":
+                            const inputField = document.createElement("input");
+                            inputField.type = "text";
+                            inputField.value = card;
+                            inputField.classList.add("edit-input");
+                            inputField.addEventListener("keydown", (e) => {
+                                if (e.key === "Enter") {
+                                    confirmEditButton.click();
+                                }
+                            });
+
+                            const confirmEditButton = document.createElement("button");
+                            confirmEditButton.textContent = "Save";
+                            confirmEditButton.classList.add("confirm");
+                            confirmEditButton.addEventListener("click", () => {
+                                const newCardName = inputField.value.trim();
+                                if (newCardName) {
+                                    list.cards[cardIndex] = newCardName;
+                                    saveBoardData(boardData);
+                                    renderBoard(boardData);
+                                }
+                            });
+
+                            const cancelEditButton = document.createElement("button");
+                            cancelEditButton.textContent = "Cancel";
+                            cancelEditButton.classList.add("cancel");
+                            cancelEditButton.addEventListener("click", () => renderBoard(boardData));
+
+                            cardElement.innerHTML = "";
+                            cardElement.appendChild(inputField);
+                            cardElement.appendChild(confirmEditButton);
+                            cardElement.appendChild(cancelEditButton);
+                            inputField.focus();
+                            break;
+
+                        case "delete-card":
+                            if (confirm("Are you sure you want to delete this card?")) {
+                                list.cards.splice(cardIndex, 1);
+                                saveBoardData(boardData);
+                                renderBoard(boardData);
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                    cardModal.remove();
                 }
             });
+      
+    });
 
-            const cancelEditButton = document.createElement("button");
-            cancelEditButton.textContent = "Cancel";
-            cancelEditButton.classList.add("cancel");
-            cancelEditButton.addEventListener("click", () => renderBoard(boardData));
-
-            cardElement.innerHTML = "";
-            cardElement.appendChild(inputField);
-            cardElement.appendChild(confirmEditButton);
-            cardElement.appendChild(cancelEditButton);
-            inputField.focus();
-        });
-
-        // Delete card functionality
-        const deleteIcon = cardElement.querySelector("#delete-card-button");
-        deleteIcon.addEventListener("click", () => {
-            if (confirm("Are you sure you want to delete this card?")) {
-                list.cards.splice(cardIndex, 1);
-                saveBoardData(boardData);
-                renderBoard(boardData);
-            }
-        });
+     
 
         // Drag-and-drop functionality for cards
         
