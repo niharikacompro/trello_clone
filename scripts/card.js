@@ -25,7 +25,7 @@ export function createListElement(list, listIndex,boardData) {
         </div>
     `;
 
-    // Edit and delete functionality for lists
+   
    
    
     function editList(){
