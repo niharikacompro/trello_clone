@@ -24,10 +24,6 @@ export function createListElement(list, listIndex,boardData) {
           ${listIcon}
         </div>
     `;
-
-   
-   
-   
     function editList(){
         const inputField = document.createElement("input");
         inputField.type = "text";
@@ -50,11 +46,22 @@ export function createListElement(list, listIndex,boardData) {
                 renderBoard(boardData);
             }
         });
+        confirmEditButton.addEventListener("keydown",(event)=>{
+            if (event.key === "Enter") {
+                confirmEditButton.click();
+            }
+        })
 
         const cancelEditButton = document.createElement("button");
         cancelEditButton.textContent = "Cancel";
         cancelEditButton.classList.add("cancel");
         cancelEditButton.addEventListener("click", () => renderBoard(boardData));
+        cancelEditButton.addEventListener("keydown",(event)=>{
+            if (event.key === "Enter") {
+                cancelEditButton.click();
+            }
+        }
+        );
 
         listHeader.innerHTML = "";
         listHeader.appendChild(inputField);
@@ -146,7 +153,22 @@ modal.addEventListener("click", (event) => {
         modal.classList.add("hidden");
     }
 });
-
+modal.addEventListener("keydown", (event) => {
+    const action = event.target.getAttribute("data-action");
+    if (action) {
+        switch (action) {
+            case "edit-list":
+               editList();
+                  break;
+           case "delete-list":
+               deleteList();
+                break;
+         default:
+                break;
+        }
+        modal.classList.add("hidden");
+    }
+});
 
     listElement.appendChild(listHeader);
 
@@ -169,7 +191,7 @@ modal.addEventListener("click", (event) => {
 
     cardElement.innerHTML = `
     
-        <h3 class="card-title" title=${card}>${isLongContent ? `${card.slice(0, 40)}...` : card}</h3>
+        <h3 class="card-title" title='${card}'>${isLongContent ? `${card.slice(0, 40)}...` : card}</h3>
         <div class="card-icons">
             ${cardIcon}
         </div>
@@ -244,6 +266,59 @@ modal.addEventListener("click", (event) => {
 
             // Modal actions
             cardModal.addEventListener("click", (event) => {
+                const action = event.target.getAttribute("data-action");
+                if (action) {
+                    switch (action) {
+                        case "edit-card":
+                            const inputField = document.createElement("input");
+                            inputField.type = "text";
+                            inputField.value = card;
+                            inputField.classList.add("edit-input");
+                            inputField.addEventListener("keydown", (e) => {
+                                if (e.key === "Enter") {
+                                    confirmEditButton.click();
+                                }
+                            });
+
+                            const confirmEditButton = document.createElement("button");
+                            confirmEditButton.textContent = "Save";
+                            confirmEditButton.classList.add("confirm");
+                            confirmEditButton.addEventListener("click", () => {
+                                const newCardName = inputField.value.trim();
+                                if (newCardName) {
+                                    list.cards[cardIndex] = newCardName;
+                                    saveBoardData(boardData);
+                                    renderBoard(boardData);
+                                }
+                            });
+
+                            const cancelEditButton = document.createElement("button");
+                            cancelEditButton.textContent = "Cancel";
+                            cancelEditButton.classList.add("cancel");
+                            cancelEditButton.addEventListener("click", () => renderBoard(boardData));
+
+                            cardElement.innerHTML = "";
+                            cardElement.appendChild(inputField);
+                            cardElement.appendChild(confirmEditButton);
+                            cardElement.appendChild(cancelEditButton);
+                            inputField.focus();
+                            break;
+
+                        case "delete-card":
+                            if (confirm("Are you sure you want to delete this card?")) {
+                                list.cards.splice(cardIndex, 1);
+                                saveBoardData(boardData);
+                                renderBoard(boardData);
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                    cardModal.remove();
+                }
+            });
+            cardModal.addEventListener("keydown", (event) => {
                 const action = event.target.getAttribute("data-action");
                 if (action) {
                     switch (action) {

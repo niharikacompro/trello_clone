@@ -26,6 +26,7 @@ button {
     all: unset; 
     cursor: pointer;
     border-radius: 8px;
+    padding: 5px;
 }
  button:focus-visible{
   outline: 2px solid #DEDEDE;
@@ -93,6 +94,10 @@ button {
     
     padding: 6px; /* Subtle padding for a clickable area */
     border-radius: 50%; /* Circular hover effect */
+}
+  ul{
+    scrollbar-width:thin;
+    scrollbar-color:#dedede f8f8f7;
 }
 
 
@@ -201,6 +206,12 @@ button {
     margin-left:8px;
     outline: none;
 }
+.input-container .confirm:hover{
+    background-color: #005fa3;
+}
+.input-container .confirm:focus-visible{
+    outline : 2px solid #005fa3;
+}
 
 
 
@@ -210,6 +221,12 @@ button {
    margin:4px;
     padding: 8px;
     outline: none;
+}
+.input-container .cancel:hover{
+    background-color: #5a6268;
+}
+.input-container .cancel:focus-visible{
+    outline : 2px solid #5a6268;
 }
 
 
