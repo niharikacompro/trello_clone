@@ -21,7 +21,6 @@ body {
     width: 1450px; 
     flex-shrink: 0; 
 }
-
 button {
     all: unset; 
     cursor: pointer;
@@ -140,6 +139,14 @@ button {
 .add-card{
     text-align: center;
 }
+.add-card :hover{
+    outline: 2px solid #ffffff;
+    background-color: #005fa3;
+}
+
+.add-card :focus-visible{
+    outline: 2px solid #ffffff;
+}
 
 
 
@@ -156,7 +163,7 @@ button {
     transition: background 0.2s ease;
 }
 
-.add-card:hover,
+
 .add-list:hover {
     background-color: #005fa3;
 }
@@ -249,7 +256,6 @@ button {
 #addListButton {
     background-color: #FFFFFF;
     outline:none;
-    
     color: #000000;
     padding: 10px;
     text-align: center;
@@ -257,7 +263,6 @@ button {
     cursor: pointer;
     margin-top: 12px;
     margin-left:18px;
-  
 }
 #addListButton:hover {
     background-color: #DEDEDE;
@@ -267,7 +272,6 @@ button {
 }
 .cards-container{
     display: flex;
-   
     flex-direction: column;
     gap: 12px;
     padding: 12px;
@@ -333,7 +337,30 @@ button {
   
     
 }
+.edit-card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch; /* Ensure full width */
+    width: 100%;
+}
 
+.edit-card {
+    display: flex;
+    flex-direction: column; /* Stack input and buttons */
+    gap: 10px;
+    width: 100%;
+}
+
+.edit-input {
+    width: 100%; /* Make input take full width */
+}
+
+.input-container .buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
    
   
 
