@@ -1,4 +1,24 @@
 
+:root {
+    --primary-bg: #3179BA;
+    --list-bg: #F1F2F4;
+    --list-text: #1E2E4D;
+    --icon-color: #5B677C;
+    --scrollbar-thumb: #DEDEDE;
+    --scrollbar-track: #F8F8F7;
+    --card-bg: #FFFFFF;
+    --hover-bg: #DEDEDE;
+    --button-bg: #0079BF;
+    --button-hover-bg: #005FA3;
+    --confirm-bg: #003F7F;
+    --cancel-bg: #6C757D;
+    --cancel-hover-bg: #5A6268;
+    --input-bg: #F6F6F6;
+    --input-border: #444;
+    --input-focus-border: #0079BF;
+}
+
+
 *{
     margin:0;
     padding:0;
@@ -6,7 +26,7 @@
 }
 body {
     font-family: Arial, sans-serif;
-    background-color: #3179BA;
+    background-color: var(--primary-bg);
 }
 #addListContainer{
     padding: 8px;
@@ -15,12 +35,15 @@ body {
 }
 #addListContainer .input-container {
     display: flex; 
-    width: 100%; 
-    overflow-x: auto; /
+   width:100%;
+    overflow-x: auto; 
 }
 #addListContainer .input-container input {
-    width: 1450px; 
+    width: 500px;
     flex-shrink: 0; 
+}
+#addListContainer .input-container input:focus{
+    border: 1px solid var(--button-bg);
 }
 button {
     all: unset; 
@@ -41,8 +64,8 @@ button {
     margin-top: 100px;
 }
 .list {
-    background-color: #F1F2F4;
-    color:#1E2E4D;
+    background-color: var(--list-bg);
+    color:var(--list-text);
     border-radius: 10px;
     margin: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
@@ -56,7 +79,7 @@ button {
 }
 .list:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-    outline:2px solid #ffffff;
+    outline:2px solid var(--card-bg);
 }
 .list-header{
     display: flex;
@@ -69,7 +92,7 @@ button {
     font-size: 20px;
     margin: 0;
     font-weight: bold;
-    color: #1E2E4D;
+    color: var(--list-text);
 }
 .card-icons {
     display: flex;
@@ -79,7 +102,7 @@ button {
 }
 .list-icons button,.card-icons button{
     padding:4px;
-    color:#5B677C;
+    color: var(--icon-color);
 }
 .list-icons {
     display: flex;
@@ -97,19 +120,19 @@ button {
 }
   ul{
     scrollbar-width:thin;
-    scrollbar-color:#dedede f8f8f7;
+    scrollbar-color:var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 
 
 .card-icons i:hover,.list-icons i:hover{
    
-    background-color: #DEDEDE ; /* Background for better contrast */
+    background-color: var(--hover-bg) ; /* Background for better contrast */
 }
 
 
 .card {
-    background: #FFFFFF;
+    background: var(--card-bg);
     padding: 12px;
     border-radius: 12px;
     display: flex;
@@ -141,19 +164,19 @@ button {
     text-align: center;
 }
 .add-card :hover{
-    outline: 2px solid #ffffff;
-    background-color: #005fa3;
+    outline: 2px solid var(--card-bg);
+    background-color: var(--button-hover-bg);
 }
 
 .add-card :focus-visible{
-    outline: 2px solid #ffffff;
+    outline: 2px solid var(--card-bg);
 }
 
 
 
 .add-card,
 .add-list {
-    background-color: #0079bf;
+    background-color: var(--button-bg);
     color: #fff;
     padding: 10px;
     text-align: center;
@@ -166,7 +189,7 @@ button {
 
 
 .add-list:hover {
-    background-color: #005fa3;
+    background-color: var(--button-hover-bg);
 }
 
 .input-container {
@@ -179,15 +202,15 @@ button {
 .input-container input {
     padding: 8px;
     border-radius: 8px;
-    border: 1px solid #444;
-    background-color: #f6f6f6;
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
     color: #1e1e2f;
     outline: none;
     transition: border 0.2s ease;
 }
 
 .input-container input:focus {
-    border: 1px solid #0079bf;
+    border: 1px solid var(--input-focus-border);
 }
 
 .input-container .buttons {
@@ -206,7 +229,7 @@ button {
 
 
 .input-container .confirm {
-    background-color: #003f7f;
+    background-color: var(--confirm-bg);
     margin: 4px;
    
     color: #fff;
@@ -215,26 +238,26 @@ button {
     outline: none;
 }
 .input-container .confirm:hover{
-    background-color: #005fa3;
+    background-color: var(--button-hover-bg);
 }
 .input-container .confirm:focus-visible{
-    outline : 2px solid #005fa3;
+    outline : 2px solid var(--button-hover-bg);
 }
 
 
 
 .input-container .cancel {
-    background-color: #6c757d;
+    background-color: var(--cancel-bg);
     color: #fff;
    margin:4px;
     padding: 8px;
     outline: none;
 }
 .input-container .cancel:hover{
-    background-color: #5a6268;
+    background-color: var(--cancel-hover-bg);
 }
 .input-container .cancel:focus-visible{
-    outline : 2px solid #5a6268;
+    outline : 2px solid var(--cancel-hover-bg);
 }
 
 
@@ -242,9 +265,9 @@ button {
 .edit-input {
     width: 100%;
     padding: 8px;
-    border: 1px solid #444;
+    border: 1px solid var(--input-border);
     border-radius: 8px;
-    background-color: #f6f6f6;
+    background-color: var(--input-bg);
     color:  #1e1e2f;
     outline: none;
     margin-right: 10px;
@@ -252,10 +275,10 @@ button {
 }
 
 .edit-input:focus {
-    border: 1px solid #0079bf;
+    border: 1px solid var(--input-focus-border);
 }
 #addListButton {
-    background-color: #FFFFFF;
+    background-color: var(--card-bg);
     outline:none;
     color: #000000;
     padding: 10px;
@@ -266,7 +289,7 @@ button {
     margin-left:18px;
 }
 #addListButton:hover {
-    background-color: #DEDEDE;
+    background-color: var(--hover-bg);
 }
 #addListButton:focus-visible{
     outline: 2px solid black;
@@ -326,6 +349,7 @@ button {
   }
  
   #addListContainer .input-container .buttons{
+    justify-content: flex-start;
     margin-top: 6px;
     padding: 1px;
     gap: 4px;

@@ -1,5 +1,4 @@
-import { createListElement } from "./card.js";
-const boardContainer = document.getElementById("boardContainer");
+
 const STORAGE_KEY = {
   BOARD_DATA: "boardData",
 };
@@ -23,9 +22,3 @@ export function loadBoardData() {
   return data;
 }
 
-export function renderBoard(boardData) {
-  boardContainer.innerHTML = "";
-  boardData.forEach((list, listIndex) =>
-    createListElement(list, listIndex, boardData)
-  );
-}

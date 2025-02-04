@@ -1,5 +1,6 @@
 const boardContainer = document.getElementById("boardContainer");
-import { renderBoard, saveBoardData } from "./storage.js";
+import {  saveBoardData} from "./storage.js";
+ import { renderBoard } from "../script.js";
 
 function editListName(list, listHeader, boardData, listIndex) {
   const inputField = document.createElement("input");
@@ -147,6 +148,7 @@ function createCard(
   cardIcon.id = `card-menu-${listIndex}-${cardIndex}`;
   cardIcon.innerHTML = `<i class="fas fa-ellipsis-h"></i>`;
   const cardHeading = document.createElement("h3");
+  cardHeading.title=card;
   cardHeading.textContent = isLongContent ? `${card.slice(0, 40)}...` : card;
   const cardIcons = document.createElement("div");
   cardIcons.classList.add("card-icons");
@@ -298,7 +300,7 @@ function createCard(
 
   cardsContainer.appendChild(cardElement);
 }
-function createAddCardContainer(list, listIndex, boardData, listElement) {
+function createAddCardContainer(list, boardData, listElement) {
   const addCardContainer = document.createElement("button");
   addCardContainer.classList.add("add-card");
   addCardContainer.textContent = "+ Add a new card";
@@ -423,6 +425,8 @@ export function createListElement(list, listIndex, boardData) {
       }
       modal.classList.add("hidden");
     }
+    
+   
   });
   modal.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
@@ -441,6 +445,9 @@ export function createListElement(list, listIndex, boardData) {
         modal.classList.add("hidden");
       }
     }
+    else if (event.key === "Escape") {
+      modal.classList.add("hidden");
+    }
   });
 
   listElement.appendChild(listHeader);
@@ -456,7 +463,6 @@ export function createListElement(list, listIndex, boardData) {
 
   const addCardContainer = createAddCardContainer(
     list,
-    listIndex,
     boardData,
     listElement
   );
