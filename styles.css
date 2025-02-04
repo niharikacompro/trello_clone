@@ -1,3 +1,4 @@
+
 *{
     margin:0;
     padding:0;
@@ -28,7 +29,7 @@ button {
     padding: 5px;
 }
  button:focus-visible{
-  outline: 2px solid #DEDEDE;
+  outline: 2px solid black;
 }
 .board-container {
     display: flex;
@@ -268,7 +269,7 @@ button {
     background-color: #DEDEDE;
 }
 #addListButton:focus-visible{
-    outline: 2px solid #DEDEDE;
+    outline: 2px solid black;
 }
 .cards-container{
     display: flex;
@@ -347,9 +348,11 @@ button {
 
 .edit-card {
     display: flex;
-    flex-direction: column; /* Stack input and buttons */
-    gap: 10px;
-    width: 100%;
+    align-items: center;
+   gap:8px;
+ 
+    
+  
 }
 
 .edit-input {
