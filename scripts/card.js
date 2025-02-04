@@ -280,6 +280,9 @@ function createCard(
           cardModal.remove();
         }
       }
+      else if (event.key === "Escape") {
+        cardModal.remove();
+      }
     });
   });
 

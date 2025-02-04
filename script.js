@@ -7,8 +7,14 @@ let boardData = loadBoardData();
 const addlistbutton = document.getElementById("addListButton");
 
 saveBoardData(boardData);
-addlistbutton.addEventListener("click", function () {
-  handleAddList(boardData);
+addlistbutton.addEventListener("click", function (e) {
+  handleAddList(boardData,e);
+});
+addlistbutton.addEventListener("keydown", function (e) {
+  if(e.key=="Enter"){
+    handleAddList(boardData,e);
+  }
+  
 });
 function renderBoard(boardData) {
   boardContainer.innerHTML = "";
