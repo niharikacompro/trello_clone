@@ -1,43 +1,63 @@
 const boardContainer = document.getElementById("boardContainer");
 import {  saveBoardData} from "./storage.js";
  import { renderBoard } from "../script.js";
-
 function editListName(list, listHeader, boardData, listIndex) {
   const inputField = document.createElement("input");
   inputField.type = "text";
   inputField.value = list.name;
   inputField.classList.add("edit-input");
-  inputField.addEventListener("keydown", (e) => {
+  function handleListInputClick(e){
     if (e.key === "Enter") {
       confirmEditButton.click();
     }
-  });
+  }
+  inputField.addEventListener("keydown",handleListInputClick);
+ 
   const confirmEditButton = document.createElement("button");
   confirmEditButton.textContent = "Save";
   confirmEditButton.classList.add("confirm");
-  confirmEditButton.addEventListener("click", () => {
+  function handleListConfirmClick(e){
     const newListName = inputField.value.trim();
     if (newListName) {
       boardData[listIndex].name = newListName;
       saveBoardData(boardData);
       renderBoard(boardData);
+      inputField.removeEventListener("keydown", handleListInputClick);
+      confirmEditButton.removeEventListener("click", handleListConfirmClick);
     }
-  });
-  confirmEditButton.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
+  }
+  function handleListConfirmKey(e){
+    if (e.key === "Enter") {
       confirmEditButton.click();
+      confirmEditButton.removeEventListener("keydown", handleListConfirmKey);
     }
-  });
+  }
+  confirmEditButton.addEventListener("click", handleListConfirmClick);
+  confirmEditButton.addEventListener("keydown", handleListConfirmKey);
+ 
+ 
 
   const cancelEditButton = document.createElement("button");
   cancelEditButton.textContent = "Cancel";
   cancelEditButton.classList.add("cancel");
-  cancelEditButton.addEventListener("click", () => renderBoard(boardData));
-  cancelEditButton.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
+  function handleListCancelClick(e){
+    renderBoard(boardData)
+    inputField.removeEventListener("keydown", handleListInputClick);
+    cancelEditButton.removeEventListener("click", handleListCancelClick);
+    
+  }
+  function handleListCancelKey(e){
+    if (e.key === "Enter") {
       cancelEditButton.click();
+      inputField.removeEventListener("keydown", handleListInputClick);
+      cancelEditButton.removeEventListener("click", handleListCancelKey);
     }
-  });
+   
+    
+  }
+
+  cancelEditButton.addEventListener("click", handleListCancelClick);
+  cancelEditButton.addEventListener("keydown", handleListCancelKey);
 
   listHeader.innerHTML = "";
   listHeader.appendChild(inputField);
@@ -88,28 +108,38 @@ function editCard(
   inputField.type = "text";
   inputField.value = card;
   inputField.classList.add("edit-input");
-  inputField.addEventListener("keydown", (e) => {
+  function handleCardInputKey(e){
     if (e.key === "Enter") {
       confirmEditButton.click();
     }
-  });
+  }
+  inputField.addEventListener("keydown", handleCardInputKey);
 
   const confirmEditButton = document.createElement("button");
   confirmEditButton.textContent = "Save";
   confirmEditButton.classList.add("confirm");
-  confirmEditButton.addEventListener("click", () => {
+  function handleCardConfirmClick(e){
     const newCardName = inputField.value.trim();
     if (newCardName) {
       list.cards[cardIndex] = newCardName;
       saveBoardData(boardData);
       renderBoard(boardData);
     }
-  });
+    inputField.removeEventListener("keydown", handleCardInputKey);
+    confirmEditButton.removeEventListener("click", handleCardConfirmClick);
+  }
+  confirmEditButton.addEventListener("click", handleCardConfirmClick);
 
   const cancelEditButton = document.createElement("button");
   cancelEditButton.textContent = "Cancel";
   cancelEditButton.classList.add("cancel");
-  cancelEditButton.addEventListener("click", () => renderBoard(boardData));
+  function handleCardCancelClick(e){
+    renderBoard(boardData);
+    inputField.removeEventListener("keydown", handleCardInputKey);
+    cancelEditButton.removeEventListener("click", handleCardCancelClick);
+
+  }
+  cancelEditButton.addEventListener("click",handleCardCancelClick);
 
   cardElement.innerHTML = "";
   cardElement.appendChild(editCardContainer);
@@ -158,76 +188,105 @@ function createCard(
   const menuButton = cardElement.querySelector(
     `#card-menu-${listIndex}-${cardIndex}`
   );
+ function handleCardMenuButtonClick(event){
+  event.stopPropagation();
 
-  menuButton.addEventListener("click", (event) => {
-    event.stopPropagation();
+  const existingModal = document.querySelector(".card-actions-modal");
+  if (existingModal) existingModal.remove();
 
-    const existingModal = document.querySelector(".card-actions-modal");
-    if (existingModal) existingModal.remove();
+  // Create a new modal
+  const cardModal = document.createElement("div");
+  cardModal.classList.add("card-actions-modal");
+  cardModal.setAttribute("data-card-index", cardIndex);
 
-    // Create a new modal
-    const cardModal = document.createElement("div");
-    cardModal.classList.add("card-actions-modal");
-    cardModal.setAttribute("data-card-index", cardIndex);
+  const cardModalList = document.createElement("ul");
+  cardModalList.classList.add("modal-actions");
+  const editcard = document.createElement("li");
+  editcard.classList.add("modal-action-item");
+  editcard.setAttribute("data-action", "edit-card");
+  editcard.setAttribute("role", "button");
+  editcard.setAttribute("tabindex", "0");
+  editcard.textContent = "Edit Card";
+  const deletecard = document.createElement("li");
+  deletecard.classList.add("modal-action-item");
+  deletecard.setAttribute("data-action", "delete-card");
+  deletecard.setAttribute("role", "button");
+  deletecard.setAttribute("tabindex", "0");
+  deletecard.textContent = "Delete Card";
+  cardModalList.appendChild(editcard);
+  cardModalList.appendChild(deletecard);
+  cardModal.appendChild(cardModalList);
+  cardElement.appendChild(cardModal);
 
-    const cardModalList = document.createElement("ul");
-    cardModalList.classList.add("modal-actions");
-    const editcard = document.createElement("li");
-    editcard.classList.add("modal-action-item");
-    editcard.setAttribute("data-action", "edit-card");
-    editcard.setAttribute("role", "button");
-    editcard.setAttribute("tabindex", "0");
-    editcard.textContent = "Edit Card";
-    const deletecard = document.createElement("li");
-    deletecard.classList.add("modal-action-item");
-    deletecard.setAttribute("data-action", "delete-card");
-    deletecard.setAttribute("role", "button");
-    deletecard.setAttribute("tabindex", "0");
-    deletecard.textContent = "Delete Card";
-    cardModalList.appendChild(editcard);
-    cardModalList.appendChild(deletecard);
-    cardModal.appendChild(cardModalList);
-    cardElement.appendChild(cardModal);
+  // Calculate position
+  const rect = menuButton.getBoundingClientRect();
+  const modalWidth = cardModal.offsetWidth;
+  const modalHeight = cardModal.offsetHeight;
 
-    // Calculate position
-    const rect = menuButton.getBoundingClientRect();
-    const modalWidth = cardModal.offsetWidth;
-    const modalHeight = cardModal.offsetHeight;
+  let top = rect.bottom + window.scrollY + 10; // Position below the button by default
+  let left = rect.left + window.scrollX;
 
-    let top = rect.bottom + window.scrollY + 10; // Position below the button by default
-    let left = rect.left + window.scrollX;
+  // Adjust for viewport boundaries
+  if (top + modalHeight > window.innerHeight) {
+    top = rect.top + window.scrollY - modalHeight - 10; // Position above if it overflows below
+  }
 
-    // Adjust for viewport boundaries
-    if (top + modalHeight > window.innerHeight) {
-      top = rect.top + window.scrollY - modalHeight - 10; // Position above if it overflows below
+  if (left + modalWidth > window.innerWidth) {
+    left = window.innerWidth - modalWidth - 10; // Adjust if it overflows to the right
+  }
+
+  cardModal.style.position = "absolute";
+  cardModal.style.top = `${
+    rect.bottom + window.scrollY - modalHeight + 80
+  }px`;
+  cardModal.style.left = `${rect.left + window.scrollX}px`;
+  cardModal.classList.add("visible");
+
+  // Add event listener to close modal
+
+  // Close modal when clicking outside
+  document.addEventListener(
+    "click",
+    (e) => {
+      if (!cardModal.contains(e.target) && e.target !== menuButton) {
+        cardModal.remove();
+      }
+    },
+    { once: true }
+  );
+
+  // Modal actions
+  cardModal.addEventListener("click", (event) => {
+    const action = event.target.getAttribute("data-action");
+    if (action) {
+      switch (action) {
+        case "edit-card":
+          const editCardContainer = document.createElement("div");
+          editCardContainer.classList.add("edit-card-container");
+          editCard(
+            card,
+            cardIndex,
+            list,
+            boardData,
+            editCardContainer,
+            cardElement
+          );
+          break;
+
+        case "delete-card":
+          deleteCard(cardIndex, list, boardData);
+          
+    menuButton.addEventListener("click", handleCardMenuButtonClick);
+          break;
+
+        default:
+          break;
+      }
+      cardModal.remove();
     }
-
-    if (left + modalWidth > window.innerWidth) {
-      left = window.innerWidth - modalWidth - 10; // Adjust if it overflows to the right
-    }
-
-    cardModal.style.position = "absolute";
-    cardModal.style.top = `${
-      rect.bottom + window.scrollY - modalHeight + 80
-    }px`;
-    cardModal.style.left = `${rect.left + window.scrollX}px`;
-    cardModal.classList.add("visible");
-
-    // Add event listener to close modal
-
-    // Close modal when clicking outside
-    document.addEventListener(
-      "click",
-      (e) => {
-        if (!cardModal.contains(e.target) && e.target !== menuButton) {
-          cardModal.remove();
-        }
-      },
-      { once: true }
-    );
-
-    // Modal actions
-    cardModal.addEventListener("click", (event) => {
+  });
+  cardModal.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
       const action = event.target.getAttribute("data-action");
       if (action) {
         switch (action) {
@@ -246,6 +305,8 @@ function createCard(
 
           case "delete-card":
             deleteCard(cardIndex, list, boardData);
+            
+    menuButton.addEventListener("click", handleCardMenuButtonClick);
             break;
 
           default:
@@ -253,40 +314,15 @@ function createCard(
         }
         cardModal.remove();
       }
-    });
-    cardModal.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        const action = event.target.getAttribute("data-action");
-        if (action) {
-          switch (action) {
-            case "edit-card":
-              const editCardContainer = document.createElement("div");
-              editCardContainer.classList.add("edit-card-container");
-              editCard(
-                card,
-                cardIndex,
-                list,
-                boardData,
-                editCardContainer,
-                cardElement
-              );
-              break;
-
-            case "delete-card":
-              deleteCard(cardIndex, list, boardData);
-              break;
-
-            default:
-              break;
-          }
-          cardModal.remove();
-        }
-      }
-      else if (event.key === "Escape") {
-        cardModal.remove();
-      }
-    });
+    }
+    else if (event.key === "Escape") {
+      cardModal.remove();
+    }
   });
+
+  }
+
+  menuButton.addEventListener("click", handleCardMenuButtonClick);
 
   // Drag-and-drop functionality for cards
 
@@ -313,32 +349,44 @@ function createAddCardContainer(list, boardData, listElement) {
     inputField.type = "text";
     inputField.placeholder = "Enter card title...";
     inputField.required = true;
-    inputField.addEventListener("keydown", (e) => {
+    function handleAddCardInputKey(e){
       if (e.key === "Enter") {
         confirmButton.click();
       }
-    });
+
+    }
+    inputField.addEventListener("keydown",handleAddCardInputKey);
     const buttons = document.createElement("div");
     buttons.classList.add("buttons");
 
     const confirmButton = document.createElement("button");
     confirmButton.textContent = "Add Card";
     confirmButton.classList.add("confirm");
-    confirmButton.addEventListener("click", () => {
+    function handleAddCardConfirmClick(e){
       const cardName = inputField.value.trim();
       if (cardName) {
         list.cards.push(cardName);
         saveBoardData(boardData);
         renderBoard(boardData);
+        inputField.removeEventListener("keydown",handleAddCardInputKey);
+        confirmButton.removeEventListener("click", handleAddCardConfirmClick);
       } else {
         alert("Please enter a card name!");
       }
-    });
+
+    }
+
+    confirmButton.addEventListener("click", handleAddCardConfirmClick);
 
     const cancelButton = document.createElement("button");
     cancelButton.textContent = "Cancel";
     cancelButton.classList.add("cancel");
-    cancelButton.addEventListener("click", () => renderBoard(boardData));
+    function handleAddCardCancelClick(e){
+      renderBoard(boardData);
+      inputField.removeEventListener("keydown",handleAddCardInputKey);
+      cancelButton.removeEventListener("click", handleAddCardCancelClick);
+    }
+    cancelButton.addEventListener("click", handleAddCardCancelClick);
 
     buttons.appendChild(confirmButton);
     buttons.appendChild(cancelButton);
@@ -366,7 +414,7 @@ export function createListElement(list, listIndex, boardData) {
   listIcon.innerHTML = `<i class="fas fa-ellipsis-h"></i>`;
   listIcon.title = "list";
 
-  listIcon.id = "list-menu";
+ 
   const listHeading = document.createElement("h3");
   listHeading.textContent = list.name;
   const listicons = document.createElement("div");
